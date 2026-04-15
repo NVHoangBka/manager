@@ -26,6 +26,12 @@ $routes->post('products/store','Products::store');
 $routes->get('products/edit/(:num)','Products::edit/$1');
 $routes->post('products/update/(:num)','Products::update/$1');
 $routes->get('products/delete/(:num)','Products::delete/$1');
+$routes->post('products/delete-image/(:num)','Products::deleteImage/$1');
+$routes->post('products/set-main/(:num)/(:num)','Products::setMainImage/$1/$2');
+
+//ProductsInfo
+$routes->get('products-info','Products::getInfoList');
+$routes->get('products/info/(:num)', 'Products::getInfo/$1');
 
 //Presentationss
 $routes->get('presentations','Presentations::index');
@@ -48,10 +54,3 @@ $routes->post('process/add-edge',          'Process::addEdge');
 $routes->post('process/delete-edge/(:num)','Process::deleteEdge/$1');
 $routes->post('process/save-position/(:num)', 'Process::savePosition/$1');
 
-//Products1
-$routes->get('products1','Products1::index');
-$routes->get('products1/create','Products1::create');
-$routes->post('products1/store','Products1::store');
-$routes->get('products1/edit/(:num)','Products1::edit/$1');
-$routes->post('products1/update/(:num)','Products1::update/$1');
-$routes->get('products1/delete/(:num)','Products1::delete/$1');

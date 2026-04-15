@@ -42,11 +42,28 @@
                     </a>
                 </li>
           
-                <li class="d-block position-relative nav-item <?= ($page === 'products/index') ? 'sidebar-group-active' : '' ?>">
-                    <a class="d-block py-3 px-4 bg-transparent text-white text-decoration-none" href="<?= base_url('products') ?>">
-                        <i class="bi bi-box"></i>
-                        <span class="menu-title ml-2" data-i18n="Products">Products</span>
-                    </a>
+                <li class="d-block position-relative nav-item">
+                    <div class="d-flex justify-content-between align-items-center py-3 px-4 bg-transparent text-white text-decoration-none">
+                        <div>
+                            <i class="bi bi-box"></i>
+                            <span class="menu-title ml-2" data-i18n="Products">Products</span>
+                        </div>
+                        <i class="bi bi-chevron-right menu-arrow float-right mt-1" style="transition: transform 0.2s;"></i>
+                    </div>
+                    <ul class="menu-content pl-5 d-none">
+                        <li class="d-block position-relative nav-item <?= ($page === 'products/index') ? 'sidebar-group-active' : '' ?>">
+                            <a class="d-block py-3 px-4 bg-transparent text-white text-decoration-none" href="<?= base_url('products') ?>">
+                                <i class="bi bi-table"></i>
+                                <span class="menu-title ml-2" data-i18n="Products">Table Products</span>
+                            </a>
+                        </li>
+                        <li class="d-block position-relative nav-item <?= ($page === 'products_info/index') ? 'sidebar-group-active' : '' ?>">
+                            <a class="d-block py-3 px-4 bg-transparent text-white text-decoration-none" href="<?= base_url('products-info') ?>">
+                                <i class="bi bi-info-circle"></i>
+                                <span class="menu-title ml-2" data-i18n="ProductsInfo">Products Info</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
           
                 <li class="d-block position-relative nav-item <?= ($page === 'presentations/index') ? 'sidebar-group-active' : '' ?>">
@@ -67,13 +84,6 @@
                         <span class="menu-title ml-2" data-i18n="Process">Process</span>
                     </a>
                 </li>
-                
-                <li class="d-block position-relative nav-item <?= ($page === 'products1/index') ? 'sidebar-group-active' : '' ?>">
-                    <a class="d-block py-3 px-4 bg-transparent text-white text-decoration-none" href="<?= base_url('products1') ?>">
-                        <i class="bi bi-box"></i>
-                        <span class="menu-title ml-2" data-i18n="Products1">Products1</span>
-                    </a>
-                </li>
           
                 <li class="has-sub nav-item d-none">
                     <a class="d-block py-3 px-4 bg-transparent text-white text-decoration-none" href="javascript:;">
@@ -92,7 +102,7 @@
                         </li>
               
                         <li class="has-sub">
-                            <a class="d-block p-3 bg-transparent text-white text-decoration-none" href="javascript:;">
+                            <a class="d-block p-3 bg-transparent text-white text-decoration-none">
                                 <i class="ft-arrow-right submenu-icon"></i>
                                 <span class="menu-item" data-i18n="Icons">Icons</span>
                             </a>

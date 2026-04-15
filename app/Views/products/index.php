@@ -176,24 +176,53 @@
                     <div class="form-group">
                         <label>Image</label>
                         <!-- Preview ảnh hiện tại -->
-                        <?php if (isset($product_edit) && $product_edit && $product_edit['image']): ?>
-                            <div class="mb-2">
-                                <img id="img-preview"
-                                     src="<?= base_url('uploads/products/' . $product_edit['image']) ?>"
-                                     width="100" height="100"
-                                     style="object-fit:cover;border-radius:8px;border:1px solid #ddd;">
+                        <?php if(!empty($product_images)): ?>
+                        <div class="d-flex flex-wrap mb-2" id ="current-images">
+                            <?php foreach ($product_images as $img): ?>
+                            <div class="mr-2 mb-2 position-relative image-item-wrap" id="img-wrap-<?= $img['id']?>">
+                                <img src="<?= base_url('uploads/products/' . $img['image']) ?>"
+                                    width="80" height="80"
+                                    style="object-fit:cover;border-radius:6px;border:<?= $img['is_main'] ? '3px solid #007bff' : '1px solid #ddd' ?>;"
+                                    title="<?= $img['is_main'] ? 'Main image' : 'Click to set main' ?>">
+
+                                <!-- Nút set main -->
+                                <?php if (!$img['is_main']): ?>
+                                <button type="button"
+                                        class="btn btn-xs btn-primary btn-set-main position-absolute"
+                                        style="top:2px;left:2px;font-size:9px;padding:1px 4px;"
+                                        data-img-id="<?= $img['id'] ?>"
+                                        data-product-id="<?= $product_edit['id'] ?>">
+                                    ★
+                                </button>
+                                <?php else: ?>
+                                <span class="position-absolute badge badge-primary"
+                                      style="top:2px;left:2px;font-size:9px;">Main</span>
+                                <?php endif; ?>
+
+                                <!-- Nút xóa ảnh -->
+                                <button type="button"
+                                        class="btn btn-xs btn-danger btn-delete-image position-absolute"
+                                        style="top:2px;right:2px;font-size:9px;padding:1px 4px;"
+                                        data-img-id="<?= $img['id'] ?>">
+                                    ✕
+                                </button>
                             </div>
-                        <?php else: ?>
-                            <div class="mb-2">
-                                <img id="img-preview" src="#"
-                                     width="100" height="100"
-                                     style="object-fit:cover;border-radius:8px;border:1px solid #ddd;display:none;">
-                            </div>
+                            <?php endforeach; ?>
+                        </div>
                         <?php endif; ?>
-                        <input type="file" name="image" id="input-image"
-                               class="form-control-file"
+                        
+                        <!-- Upload ảnh mới -->
+                        <input type="file" 
+                               name="images[]" 
+                               multiple
+                               class="form-control-file" 
+                               id="input-images"
                                accept="image/jpg,image/jpeg,image/png">
-                        <small class="text-muted">JPG, PNG</small>
+                        
+                        <small class="text-muted">JPG, PNG — có thể chọn nhiều ảnh</small>
+
+                        <!-- Preview ảnh mới chọn -->
+                        <div class="d-flex flex-wrap mt-2" id="new-images-preview"></div>
                     </div>
 
                     <div class="form-group">

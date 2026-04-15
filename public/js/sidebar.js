@@ -33,6 +33,31 @@ $(document).ready(function() {
         $('#sidebar').toggleClass('collapsed');
         $('body').toggleClass('sidebar-collapsed');
     });
+    
+    // Sidebar dropdown
+    $('.nav-item > div.d-flex').on('click', function() {
+        var submenu = $(this).next('.menu-content');
+        if (!submenu.length) return;
 
+        var isOpen = !submenu.hasClass('d-none');
+
+        // Đóng tất cả submenu khác
+        $('.menu-content').addClass('d-none');
+        $('.menu-arrow').removeClass('rotate-90');
+
+        if (!isOpen) {
+            submenu.removeClass('d-none');
+            $(this).find('.menu-arrow').addClass('rotate-90');
+        }
+    });
+
+    // Auto mở submenu nếu có item active bên trong
+    $('.menu-content').each(function() {
+        if ($(this).find('.sidebar-group-active').length) {
+            $(this).removeClass('d-none');
+            $(this).prev('.d-flex').find('.menu-arrow').addClass('rotate-90');
+        }
+    });
+    
     $('[data-toggle="tooltip"]').tooltip();
 });

@@ -6,7 +6,7 @@ use CodeIgniter\Config\BaseConfig;
 
 class App extends BaseConfig
 {
-    public string $baseURL = 'http://192.168.3.198/';
+    public string $baseURL = 'http://192.168.1.198/';
 
     public array $allowedHostnames = [];
 

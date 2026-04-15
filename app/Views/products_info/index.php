@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4><i class="fas fa-box"></i> <?= $title ?></h4>
+    <h4><i class="fas fa-box mr-2"></i>Product InFo</h4>
 </div>
 
 <?php if (session()->getFlashdata('success')): ?>
@@ -92,7 +92,7 @@
                         </a>
                     </li>
                     <li class="col-3 text-center">
-                        <a class="nav-link product-item text-body border" data-toggle="tab" href="#tab-warehose-stock">
+                        <a class="nav-link product-item text-body border" data-toggle="tab" href="#tab-warehouse-stock">
                             <i class="fas fa-check-circle"></i> Warehouse & Stock
                         </a>
                     </li>
@@ -103,46 +103,51 @@
                 <!-- TAB 1: Product Info -->
                 <div class="tab-pane fade show active" id="tab-product-info">
                     <div class="d-flex p-3">
+                        <!--IMAGE-->
                         <div class="product-image mr-4">
                             <div class="image-main">
-                                <?php if ($p['image']): ?>
-                                    <img src="<?= base_url('uploads/products/' . $p['image']) ?>"
-                                         width="360" height="360"
-                                         style="object-fit:cover;border-radius:4px;"
-                                         alt="<?= esc($p['name']) ?>">
-                                <?php else: ?>
-                                    <div
-                                        class="d-flex align-items-center justify-content-center rounded"
-                                        style="width:360px;height:360px;background:var(--color-background-secondary);" >
-                                        <i class="fas fa-image text-muted"></i>
-                                    </div>
-                                <?php endif; ?>
+                                <img id="detail-image-main" src="" alt=""
+                                     width="360" height="360"
+                                     style="object-fit:cover;border-radius:8px;border:1px solid #ddd;display:none;">
+                                <div id="detail-image-placeholder"
+                                    class="d-flex align-items-center justify-content-center rounded"
+                                    style="width:300px;height:300px;background:#f0f0f0;">
+                                    <i class="fas fa-image fa-3x text-muted"></i>
+                               </div>
                             </div>
-                            <div class="image-select mt-4 d-flex justify-content-center gap-3">
-                                <img class="image-item" src="<?= base_url('uploads/products/' . $p['image']) ?>"
-                                    width="60" height="60"
-                                    style="object-fit:cover;border-radius:4px;"
-                                    alt="<?= esc($p['name']) ?>">
-                                <img class="image-item" src="<?= base_url('uploads/products/' . $p['image']) ?>"
-                                    width="60" height="60"
-                                    style="object-fit:cover;border-radius:4px;"
-                                    alt="<?= esc($p['name']) ?>">
+                            <div class="image-select mt-3 d-flex justify-content-center gap-2">
+                                <img id="detail-image-thumb" src="" alt=""
+                                     width="60" height="60"
+                                     style="object-fit:cover;border-radius:4px;border:2px solid #007bff;cursor:pointer;display:none;">
                             </div>
                         </div>
+                        
+                        <!--INFO-->
                         <div style="flex:1">
                             <div>
-                                <div class="font-weight-bold" style="font-size: 36px"><?= esc($p['name']) ?></div>                        
-                                <div class="text-primary" style="font-size: 28px"><b>$<?= number_format($p['unit_price']) ?></b> </div>
+                                <div id="detail-name" class="font-weight-bold" style="font-size: 36px" ></div>                        
+                                <div id="detail-price" class="text-primary font-weight-bold" style="font-size: 28px"></div>
                                 <div style="font-size: 18px">
-                                    <span class="badge badge-<?= $p['status'] ? 'success' : 'secondary' ?>">
-                                        <?= $p['status'] ? 'Active' : 'Inactive' ?>
+                                    <span id="detail-status" class="badge">
                                     </span>
                                 </div>
                                 <div class="d-flex align-items-center gap-3">
-                                    <span><b>Code: </b><?= esc($p['code'])?></span>
-                                    <span><b>Category: </b><?= esc($p['category'])?></span>
+                                    <span>
+                                        <b>Code: </b>
+                                        <span id="detail-code">—</span>
+                                    </span>
+                                    <span>
+                                        <b>Category:</b> 
+                                        <span id="detail-category">—</span>
+                                    </span>
+                                    <span>
+                                        <b>Size:</b> 
+                                        <span id="detail-size">—</span> 
+                                    </span>
                                 </div>
                             </div>
+                            
+                            <!-- Stat Cards -->
                             <div class="row mt-4">
                                 <!-- Card 1 -->
                                 <div class="col-xl-4 col-md-6 mb-4 text-white">
@@ -151,7 +156,7 @@
                                             <div class="row no-gutters align-items-center ">
                                                 <div class="col mr-2 ">
                                                     <div class="text-xs font-weight-bold text-uppercase mb-1">Total Orders</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= number_format($total_orders ?? 0) ?></div>
+                                                    <div id="detail-orders" class="h5 mb-0 font-weight-bold text-gray-800">—</div>
                                                 </div>
                                                 <div class="col-auto">
                                                     <i class="fas fa-shopping-cart fa-2x text-gray-300" style="font-size: 36px"></i>
@@ -168,7 +173,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-uppercase mb-1">Revenue</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $revenue ?? '0' ?></div>
+                                                    <div id="detail-revenue" class="h5 mb-0 font-weight-bold text-gray-800">—</div>
                                                 </div>
                                                 <div class="col-auto">
                                                     <i class="bi bi-currency-dollar text-gray-300" style="font-size: 36px"></i>
@@ -184,16 +189,17 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-uppercase mb-1">Stock</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" style="font-size: 36px"><?= number_format($stock ?? 0) ?></div>
+                                                    <div id="detail-stock" class="h5 mb-0 font-weight-bold text-gray-800" style="font-size: 36px">—</div>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <i class="fas fa-users fa-2x text-gray-300"></i>
+                                                    <i class="bi bi-boxes fa-2x text-gray-300"></i>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
                     </div>
                 </div>

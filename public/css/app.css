@@ -101,7 +101,8 @@
     min-width: 70px !important;
     width: 70px !important;
 }
-#sidebar.collapsed .menu-title {
+#sidebar.collapsed .menu-title,
+#sidebar.collapsed .menu-arrow{
     display: none !important;
 }
 #sidebar.collapsed #logo-text {
@@ -109,6 +110,10 @@
 }
 #sidebar.collapsed #sidebarToggle > .toggle-icon {
     display: none !important;
+}
+
+#sidebar.collapsed .menu-content {
+    padding-left: 1.5rem !important;
 }
 
 /* Căn giữa icon khi thu gọn */
@@ -134,7 +139,8 @@
 }
 
 #sidebar.collapsed:hover .menu-title,
-#sidebar.collapsed:hover #logo-text{
+#sidebar.collapsed:hover #logo-text,
+#sidebar.collapsed:hover .menu-arrow{
     display: inline !important;
 }
 
@@ -149,13 +155,11 @@
 
 #sidebar.collapsed .nav-item:hover {
     border-right: solid 5px #F55252;
-    background-color: rgba(224,224,224,0.2);
-}
-#sidebar.collapsed .nav-item:hover .menu-title {
-    display: inline !important;
+    background-image: linear-gradient(135deg, #2F3EA0, #AE342D) !important;
+
 }
 
-#sidebar.collapsed .nav-item:hover a {
+/*#sidebar.collapsed .nav-item:hover a {
     text-align: left !important;
     padding-left: 16px !important;
     padding-right: 16px !important;
@@ -172,7 +176,7 @@
 
 #sidebar.collapsed .nav-item:hover a i {
     margin-right: 10px;
-}
+}*/
 
 /* ===== LAYOUT ===== */
 .wrapper > .container-fluid {
@@ -218,3 +222,12 @@ body.sidebar-collapsed .main-content {
     border: 1px solid #F55252;
 }
 
+.menu-arrow { transition: transform 0.25s ease; }
+.menu-arrow.rotate-90 { transform: rotate(90deg); }
+
+.nav-item > div.d-flex { cursor: pointer; }
+.nav-item > div.d-flex:hover { background: rgba(255,255,255,0.08) !important; }
+
+.menu-content { list-style: none; padding-left: 0; background: rgba(0,0,0,0.15); }
+.menu-content .nav-item a:hover { background: rgba(255,255,255,0.08) !important; }
+.menu-content .sidebar-group-active a { border-left: 3px solid #fff; background: rgba(255,255,255,0.12) !important; }

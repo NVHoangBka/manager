@@ -80,6 +80,7 @@ php_errors.log
 
 # Don't save phpunit under version control.
 /phpunit
+**/node_modules/
 
 #-------------------------
 # Composer
