@@ -5,36 +5,65 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
+//========================== LANGUAGE ========================
+$routes->get('switch-lang/(:any)', 'Language::switch/$1');
+
 $routes->get('/', 'Auth::index');
 $routes->get('login', 'Auth::login');
 $routes->post('login', 'Auth::login');
 $routes->get('logout', 'Auth::logout');
+
+// ====================== DASHBOARD ======================
 $routes->get('dashboard', 'Dashboard::index');
 
-//Users
-$routes->get('users','Users::index');
-$routes->get('users/create','Users::create');
-$routes->post('users/store','Users::store');
-$routes->get('users/edit/(:num)','Users::edit/$1');
-$routes->post('users/update/(:num)','Users::update/$1');
-$routes->get('users/delete/(:num)','Users::delete/$1');
+// API cho Dashboard
+$routes->group('api/dashboard', ['namespace' => 'App\Controllers\Api'], function($routes) {
+    $routes->get('cards', 'DashboardApi::getCards');
+    $routes->get('charts', 'DashboardApi::getCharts');
+});
 
-//Products
-$routes->get('products','Products::index');
-$routes->get('products/create','Products::create');
-$routes->post('products/store','Products::store');
-$routes->get('products/edit/(:num)','Products::edit/$1');
-$routes->post('products/update/(:num)','Products::update/$1');
-$routes->get('products/delete/(:num)','Products::delete/$1');
-$routes->post('products/delete-image/(:num)','Products::deleteImage/$1');
-$routes->post('products/set-main/(:num)/(:num)','Products::setMainImage/$1/$2');
+// ====================== USERS ======================
+// Web Routes (giữ để render trang)
+$routes->group('users', function($routes) {
+    $routes->get('/', 'Users::index');
+    $routes->get('create', 'Users::create');
+    $routes->get('edit/(:num)', 'Users::edit/$1');
+});
 
-//ProductsInfo
-$routes->get('products-info','Products::getInfoList');
-$routes->get('products/info/(:num)', 'Products::getInfo/$1');
+// API Routes
+$routes->group('api/users',['namespace' => 'App\Controllers\Api'], function($routes) {
+    $routes->post('store', 'UsersApi::store');
+    $routes->post('update/(:num)', 'UsersApi::update/$1');
+    $routes->post('delete/(:num)', 'UsersApi::delete/$1');
+});
 
-//Presentationss
-$routes->get('presentations','Presentations::index');
+// ====================== PRODUCTS ======================
+// Web Routes
+$routes->group('products', function($routes) {
+    $routes->get('/', 'Products::index');
+    $routes->get('create', 'Products::create');
+    $routes->get('edit/(:num)', 'Products::edit/$1');
+});
+// API Routes
+$routes->group('api/products',['namespace' => 'App\Controllers\Api'], function($routes) {
+    $routes->post('store', 'ProductsApi::store');
+    $routes->post('update/(:num)', 'ProductsApi::update/$1');
+    $routes->get('info/(:num)', 'ProductsApi::getInfo/$1');
+    $routes->post('set-main/(:num)/(:num)', 'ProductsApi::setMainImage/$1/$2');
+    $routes->post('delete-image/(:num)', 'ProductsApi::deleteImage/$1');
+    $routes->post('delete/(:num)', 'ProductsApi::delete/$1');
+});
+
+// Products Info Page (sidebar + detail)
+$routes->get('products-info', 'Products::getInfoList');
+
+// Presentations
+$routes->get('presentations', 'Presentations::index');
+
+// API cho Presentations
+$routes->group('api/presentations', ['namespace' => 'App\Controllers\Api'], function($routes) {
+    $routes->get('data', 'PresentationsApi::getData');
+});
 
 //Production Output
 $routes->get('production-output',        'ProductionOutput::index');

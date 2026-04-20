@@ -20,6 +20,7 @@ abstract class BaseController extends Controller
 
      protected $session;
      protected $data = [];
+     protected $helpers = ['language'];
 
     /**
      * @return void
@@ -34,5 +35,20 @@ abstract class BaseController extends Controller
         parent::initController($request, $response, $logger);
 
         $this->session = \Config\Services::session();
+        
+        // ==================== XỬ LÝ NGÔN NGỮ ====================
+        $locale = $this->session->get('lang') ?? 'vi';
+        
+        // Thiết lập ngôn ngữ cho hệ thống
+        \Config\Services::language()->setLocale($locale);
+
+        // Truyền dữ liệu chung cho tất cả view
+        $this->data = [
+            'user'     => $this->session->get('user'),
+            'lang'     => $locale,
+            'locale'   => $locale,
+        ];
+        
+        
     }
 }

@@ -1,20 +1,20 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4><i class="fas fa-project-diagram"></i> Process Flow</h4>
+    <h4><i class="fas fa-project-diagram"></i> <?= lang('app.process') ?></h4>
     <div>
         <button class="btn btn-sm btn-success" id="btn-add-node">
-            <i class="fas fa-plus"></i> Add Node
+            <i class="fas fa-plus"></i> <?= lang('app.add_node') ?>
         </button>
         <button class="btn btn-sm btn-warning ml-1" id="btn-add-edge">
-            <i class="fas fa-link"></i> Add Edge
+            <i class="fas fa-link"></i> <?= lang('app.add_edge') ?>
         </button>
         <button class="btn btn-sm btn-outline-warning ml-1" id="btn-edgehandle">
-            <i class="fas fa-bezier-curve"></i> Edge Handle
+            <i class="fas fa-bezier-curve"></i> <?= lang('app.edge_handle') ?>
         </button>
         <button class="btn btn-sm btn-secondary" id="btn-fit">
             <i class="fas fa-compress-arrows-alt"></i> Fit
         </button>
         <button class="btn btn-sm btn-primary ml-1" id="btn-print">
-            <i class="fas fa-print"></i> Print
+            <i class="fas fa-print"></i> <?= lang('app.print') ?>
         </button>
     </div>
 </div>
@@ -23,22 +23,22 @@
 <ul class="nav nav-tabs" id="processTabs">
     <li class="nav-item col-3 text-center">
         <a class="nav-link active" data-toggle="tab" href="#tab-sewing">
-            <i class="fas fa-cut"></i> Quy trình may
+            <i class="fas fa-cut"></i> <?= lang('app.sewing_process') ?>
         </a>
     </li>
     <li class="nav-item col-3 text-center">
         <a class="nav-link" data-toggle="tab" href="#tab-production">
-            <i class="fas fa-industry"></i> Quy trình sản xuất
+            <i class="fas fa-industry"></i> <?= lang('app.product_process') ?>
         </a>
     </li>
     <li class="nav-item col-3 text-center">
         <a class="nav-link" data-toggle="tab" href="#tab-quality">
-            <i class="fas fa-check-circle"></i> Kiểm tra chất lượng
+            <i class="fas fa-check-circle"></i> <?= lang('app.quality_process') ?>
         </a>
     </li>
     <li class="nav-item col-3 text-center">
         <a class="nav-link" data-toggle="tab" href="#tab-order">
-            <i class="fas fa-shopping-cart"></i> Xử lý đơn hàng
+            <i class="fas fa-shopping-cart"></i> <?= lang('app.order_process') ?>
         </a>
     </li>
 </ul>
@@ -87,7 +87,7 @@
         <span class="mr-3"><span style="display:inline-block;width:14px;height:14px;background:#dc3545;border-radius:50%;"></span> Error</span>
         <span class="text-muted ml-3" style="font-size:12px;">
             <i class="fas fa-info-circle"></i>
-            Double click = sửa node | Right click = xóa | Kéo thả = di chuyển
+            <?= lang('app.note_process') ?>
         </span>
     </div>
 </div>
@@ -98,7 +98,7 @@
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
                 <h5 class="modal-title" id="modal-node-title">
-                    <i class="fas fa-plus"></i> Add Node
+                    <i class="fas fa-plus"></i> <?= lang('app.add_node') ?>
                 </h5>
                 <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
             </div>

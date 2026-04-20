@@ -1,35 +1,24 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4><i class="fas fa-users"></i> Users</h4>
+    <h4><i class="fas fa-users"></i> <?= lang('app.users') ?></h4>
 </div>
 
-<?php if (session()->getFlashdata('success')): ?>
-    <div class="alert alert-success alert-dismissible fade show">
-        <i class="fas fa-check-circle"></i> <?= session()->getFlashdata('success') ?>
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-    </div>
-<?php endif; ?>
-
-<?php if (session()->getFlashdata('error')): ?>
-    <div class="alert alert-danger alert-dismissible fade show">
-        <i class="fas fa-exclamation-circle"></i> <?= session()->getFlashdata('error') ?>
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-    </div>
-<?php endif; ?>
+<!-- Alert container -->
+<div id="alert-container"></div>
 
 <div class="row">
     <!--DATA TABLE-->
     <div class="col-12 col-lg-8">
         <div class="card shadow">
             <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
-                <h6 class="m-0">User List</h6>
+                <h6 class="m-0"><?= lang('app.user_list') ?></h6>
                 <button class="btn btn-sm btn-dark" id="btn-print">
-                    <i class="fas fa-print"></i> Print
+                    <i class="fas fa-print"></i> <?= lang('app.print') ?>
                 </button>
             </div>
             <div class="card-body">
-                <a href="<?= base_url('users/create')?>"
-                    class="btn btn-sm btn-success float-right mb-2">
-                    <i class="bi bi-plus-square"></i> Add
+                <a href="<?= base_url('users/create') ?>" 
+                   class="btn btn-sm btn-success float-right mb-2" id="btn-add-new">
+                    <i class="bi bi-plus-square"></i> <?= lang('app.add_user') ?>
                 </a>
                 
                 <div class="table-responsive">
@@ -37,16 +26,16 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>#</th>
-                                <th>User Name</th>
-                                <th>Full Name</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th id="action">Action</th>
+                                <th><?= lang('app.username') ?></th>
+                                <th><?= lang('app.full_name') ?></th>
+                                <th><?= lang('app.role') ?></th>
+                                <th><?= lang('app.status') ?></th>
+                                <th id="action"><?= lang('app.action') ?></th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($users as $u): ?>
-                            <tr>
+                            <tr data-id="<?= $u['id'] ?>">
                                 <td><?= $u['id'] ?></td>
                                 <td><?= esc($u['user_name']) ?></td>
                                 <td>
@@ -65,15 +54,14 @@
                                 </td>
                                 <td id="action" >
                                     <div class="d-flex gap-2">
-                                        <a href="<?= base_url('users/edit/' . $u['id']) ?>"
-                                            class="btn btn-sm btn-warning">
-                                             <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a href="<?= base_url('users/delete/' . $u['id']) ?>"
-                                            class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Delete this user?')">
-                                             <i class="fas fa-trash"></i>
-                                        </a>
+                                        <button class="btn btn-sm btn-warning btn-edit-user"
+                                                data-id="<?= $u['id'] ?>">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger btn-delete-user"
+                                                data-id="<?= $u['id'] ?>">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -85,87 +73,65 @@
         </div>
     </div>
     
-    <!--Form-->
-        <div class="col-12 col-lg-4 mt-4 mt-lg-0">
+    <!-- FORM -->
+    <div class="col-12 col-lg-4 mt-4 mt-lg-0">
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
-               <h6 class="m-0" id="form-title">
-                    <?= isset($user_edit) && $user_edit 
-                    ? '<i class="fas fa-user-edit"></i> Edit User' 
-                    : '<i class="fas fa-user-plus"></i> Add User' ?>
+                <h6 class="m-0" id="form-title">
+                    <i class="fas fa-user-plus"></i> <?= lang('app.add_user') ?>
                 </h6>
             </div>
             <div class="card-body">
-
-                <?php if (isset($errors)): ?>
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            <?php foreach ($errors as $error): ?>
-                                <li><?= $error ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
-
-                <form method="POST" id="user-form"
-                      action="<?= isset($user_edit) && $user_edit
-                          ? base_url('users/update/' . $user_edit['id'])
-                          : base_url('users/store') ?>">
+                <form method="POST" id="user-form" 
+                      action="<?= base_url('api/users/store') ?>">
                     <?= csrf_field() ?>
+                    
+                    <input type="hidden" name="id" id="hidden-id" value="">
 
                     <div class="form-group">
-                        <label>User Name <span class="text-danger">*</span></label>
-                        <input type="text" name="user_name" id="f-user_name" class="form-control"
-                               value="<?= $user_edit['user_name'] ?? old('user_name') ?>"
-                               <?= isset($user_edit) && $user_edit ? 'readonly' : 'required' ?>>
+                        <label><?= lang('app.username') ?> <span class="text-danger">*</span></label>
+                        <input type="text" name="user_name" id="f-user_name" class="form-control" required>
                     </div>
 
                     <div class="form-group">
-                        <label>Password
-                            <small class="text-muted" id="pass-hint"></small>
+                        <label><?= lang('app.password') ?> 
                         </label>
                         <input type="password" name="password" id="f-password" class="form-control">
                     </div>
 
                     <div class="form-group">
-                        <label>Full Name <span class="text-danger">*</span></label>
-                        <input type="text" name="full_name" id="f-fullname" class="form-control" required
-                               value="<?= $user_edit['full_name'] ?? old('full_name') ?>">
+                        <label><?= lang('app.full_name') ?>  <span class="text-danger">*</span></label>
+                        <input type="text" name="full_name" id="f-fullname" class="form-control" required>
                     </div>
 
                     <div class="form-group">
-                        <label>Email <span class="text-danger">*</span></label>
-                        <input type="email" name="email" id="f-email" class="form-control" required
-                               value="<?= $user_edit['email'] ?? old('email') ?>">
+                        <label><?= lang('app.email') ?>  <span class="text-danger">*</span></label>
+                        <input type="email" name="email" id="f-email" class="form-control" required>
                     </div>
 
                     <div class="form-group">
-                        <label>Role <span class="text-danger">*</span></label>
+                        <label><?= lang('app.role') ?>  <span class="text-danger">*</span></label>
                         <select name="role" id="f-role" class="form-control" required>
-                            <option value="user"  <?= ($user_edit['role'] ?? '') === 'user'  ? 'selected' : '' ?>>User</option>
-                            <option value="admin" <?= ($user_edit['role'] ?? '') === 'admin' ? 'selected' : '' ?>>Admin</option>
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Status</label>
+                        <label><?= lang('app.status') ?> </label>
                         <select name="status" id="f-status" class="form-control">
-                            <option value="1" <?= ($user_edit['status'] ?? 1) == 1 ? 'selected' : '' ?>>Active</option>
-                            <option value="0" <?= ($user_edit['status'] ?? 1) == 0 ? 'selected' : '' ?>>Inactive</option>
+                            <option value="1"><?= lang('app.active') ?> </option>
+                            <option value="0"><?= lang('app.inactive') ?> </option>
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-block">
-                        <i class="fas fa-save"></i>
-                        <span id="btn-text"><?= isset($user_edit) && $user_edit ? 'Update' : 'Save' ?></span>
+                    <button type="submit" class="btn btn-primary btn-block" id="btn-submit">
+                        <i class="fas fa-save"></i> <?= lang('app.save') ?>
                     </button>
 
-                    <?php if (isset($user_edit) && $user_edit): ?>
-                    <a href="<?= base_url('users') ?>" class="btn btn-secondary btn-block mt-2">
-                        <i class="fas fa-times"></i> Cancel
-                    </a>
-                    <?php endif; ?>
-
+                    <button type="button" class="btn btn-secondary btn-block mt-2" id="btn-cancel" style="display:none;">
+                        <i class="fas fa-times"></i> <?= lang('app.cancel') ?>
+                    </button>
                 </form>
             </div>
         </div>

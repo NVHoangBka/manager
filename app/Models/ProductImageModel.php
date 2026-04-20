@@ -7,10 +7,9 @@ class ProductImageModel extends Model
     protected $table      = 'product_images';
     protected $primaryKey = 'id';
     protected $allowedFields = ['product_id', 'image', 'is_main', 'sort_order'];
-    protected $useTimestamps = true;
-    protected $createdField  = 'created_at';
-    protected $updatedField  = false;
+    protected $useTimestamps = false;
 
+    
     public function getByProduct($productId)
     {
         return $this->where('product_id', $productId)
@@ -30,5 +29,19 @@ class ProductImageModel extends Model
     {
         $this->where('product_id', $productId)->set('is_main', 0)->update();
         $this->update($imageId, ['is_main' => 1]);
+    }
+    
+    public function deleteByProduct($productId)
+    {
+        $images = $this->where('product_id', $productId)->findAll();
+        
+        foreach ($images as $img) {
+            $filePath = FCPATH . 'uploads/products/' . $img['image'];
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+        
+        return $this->where('product_id', $productId)->delete();
     }
 }

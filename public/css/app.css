@@ -159,25 +159,6 @@
 
 }
 
-/*#sidebar.collapsed .nav-item:hover a {
-    text-align: left !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-    white-space: nowrap;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    background-image: linear-gradient(135deg, #2F3EA0, #AE342D) !important;
-    z-index: 999;
-    border-radius: 0 4px 4px 0;
-}
-
-
-#sidebar.collapsed .nav-item:hover a i {
-    margin-right: 10px;
-}*/
-
 /* ===== LAYOUT ===== */
 .wrapper > .container-fluid {
     padding: 0;

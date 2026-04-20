@@ -1,5 +1,6 @@
-/* global $ */
+/* global $ baseUrl */
 $(document).ready(function() {
+    
     if ($('#products-table').length) {
         $('#products-table').DataTable({
             language: {
@@ -11,7 +12,7 @@ $(document).ready(function() {
         });
     }
     
-    // Preview nhiều ảnh mới
+    // Preview Image New
     $('#input-images').on('change', function() {
         $('#new-images-preview').empty();
         var files = this.files;
@@ -31,36 +32,49 @@ $(document).ready(function() {
         }
     });
 
-    // Xóa ảnh
+    // ====================== DELETE IMAGE ======================
     $(document).on('click', '.btn-delete-image', function() {
         if (!confirm('Xóa ảnh này?')) return;
+        
         var imgId = $(this).data('img-id');
         var wrap  = $('#img-wrap-' + imgId);
+        
         $.ajax({
-            url: baseUrl + 'products/delete-image/' + imgId,
+            url: baseUrl + 'api/products/delete-image/' + imgId,
             method: 'POST',
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
             success: function(res) {
-                if (res.status === 'success') wrap.remove();
+                if (res.status === 'success') {
+                    wrap.remove();
+                } else {
+                    alert('Error delete Image!');
+                }
+            },
+            error: function() {
+                alert('Có lỗi xảy ra khi xóa ảnh!');
             }
         });
     });
-
-    // Set ảnh chính
+    
+    // ====================== SET MAIN IMAGE ======================
     $(document).on('click', '.btn-set-main', function() {
         var imgId     = $(this).data('img-id');
         var productId = $(this).data('product-id');
+        
         $.ajax({
-            url: baseUrl + 'products/set-main/' + productId + '/' + imgId,
+            url: baseUrl + 'api/products/set-main/' + productId + '/' + imgId,
             method: 'POST',
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            headers: { 
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+            },
             success: function(res) {
-                if (res.status === 'success') location.reload();
+                if (res.status === 'success') {
+                    location.reload();
+                }
             }
         });
     });
 
-    
     // Print.js
     $('#btn-print').on('click', function() {
         printJS({
@@ -71,12 +85,13 @@ $(document).ready(function() {
         });
     });
     
-    // Tab active
+    // ====================== TAB SYSTEM ======================
     $('#productTabs .product-item').on('click', function() {
         $('#productTabs .product-item').removeClass('product-item-active');
         $(this).addClass('product-item-active');
     });
     
+    // ====================== PRODUCT DETAIL ======================
     function loadProduct(p) {
         var id       = $(p).data('id');
         var name     = $(p).data('name');
@@ -111,7 +126,7 @@ $(document).ready(function() {
         }
         
         $.ajax({
-            url: baseUrl + 'products/info/' + id,
+            url: baseUrl + 'api/products/info/' + id,
             method: 'GET',
             success: function(res) {
                 if (res.status === 'success') {
@@ -119,21 +134,34 @@ $(document).ready(function() {
                     $('#detail-revenue').text('$' + res.revenue);
                     $('#detail-stock').text(res.stock);
                     
-                    // Hiển thị ảnh
+                    // Images
                     if (res.images && res.images.length > 0) {
-                        var mainImg = res.images.find(function(i) { return i.is_main == 1; }) || res.images[0];
+                        var mainImg = res.images.find(function(i) { 
+                            return parseInt(i.is_main) === 1; 
+                        }) || res.images[0];
+                        
+                        //Show main image
                         $('#detail-image-main').attr('src', mainImg.url).show();
                         $('#detail-image-placeholder').hide();
 
                         // Thumbnail gallery
-                        var thumbs = '';
+                        var thumbsHTML = '';
                         res.images.forEach(function(img) {
-                            thumbs += '<img src="' + img.url + '" width="60" height="60" ' +
-                                'class="image-thumb mr-2 mb-1" data-src="' + img.url + '" ' +
-                                'style="object-fit:cover;border-radius:4px;cursor:pointer;' +
-                                'border:' + (img.is_main ? '2px solid #007bff' : '1px solid #ddd') + ';">';
+                            const isMain = parseInt(img.is_main) === 1 || img.url === mainImg.url;
+                            thumbsHTML += `
+                                <img    src="${img.url}" 
+                                        width="70" height="70"
+                                        class="image-thumb"
+                                        data-src="${img.url}"
+                                        data-is-main="${isMain ? '1' : '0'}"
+                                        style="object-fit:cover; 
+                                                border-radius:8px; 
+                                                cursor:pointer;
+                                                border: ${isMain ? '3px solid #007bff' : '2px solid #ddd'};
+                                                box-shadow: ${isMain ? '0 0 8px rgba(0,123,255,0.5)' : 'none'};">
+                            `;
                         });
-                        $('#detail-image-thumbs').html(thumbs);
+                        $('#detail-image-thumbs').html(thumbsHTML);
                         $('#detail-image-gallery').show();
                     } else {
                         $('#detail-image-main').hide();
@@ -151,15 +179,22 @@ $(document).ready(function() {
         });
     }
     
-    // Click thumbnail → đổi ảnh chính
+    // Click thumbnail
     $(document).on('click', '.image-thumb', function() {
         var src = $(this).data('src');
         $('#detail-image-main').attr('src', src);
-        $('.image-thumb').css('border', '1px solid #ddd');
-        $(this).css('border', '2px solid #007bff');
+        
+        $('.image-thumb').css({     
+            'border': '2px solid #ddd',
+            'box-shadow': 'none'
+        });
+        $(this).css({
+            'border': '3px solid #007bff',
+            'box-shadow': '0 0 8px rgba(0,123,255,0.5)'
+        });
     });
 
-    // Click product trong danh sách → active
+    // Click product in list
     $('.product-items .product-item').on('click', function() {
         // Active item
         $('.product-items .product-item').removeClass('product-item-active');

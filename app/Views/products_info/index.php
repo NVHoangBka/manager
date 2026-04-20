@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4><i class="fas fa-box mr-2"></i>Product InFo</h4>
+    <h4><i class="fas fa-box"></i> <?= $title ?></h4>
 </div>
 
 <?php if (session()->getFlashdata('success')): ?>
@@ -103,22 +103,18 @@
                 <!-- TAB 1: Product Info -->
                 <div class="tab-pane fade show active" id="tab-product-info">
                     <div class="d-flex p-3">
-                        <!--IMAGE-->
                         <div class="product-image mr-4">
                             <div class="image-main">
                                 <img id="detail-image-main" src="" alt=""
-                                     width="360" height="360"
+                                         width="360" height="360"
                                      style="object-fit:cover;border-radius:8px;border:1px solid #ddd;display:none;">
                                 <div id="detail-image-placeholder"
-                                    class="d-flex align-items-center justify-content-center rounded"
+                                        class="d-flex align-items-center justify-content-center rounded"
                                     style="width:300px;height:300px;background:#f0f0f0;">
                                     <i class="fas fa-image fa-3x text-muted"></i>
-                               </div>
+                                </div>
                             </div>
-                            <div class="image-select mt-3 d-flex justify-content-center gap-2">
-                                <img id="detail-image-thumb" src="" alt=""
-                                     width="60" height="60"
-                                     style="object-fit:cover;border-radius:4px;border:2px solid #007bff;cursor:pointer;display:none;">
+                            <div id="detail-image-thumbs" class="image-select mt-3 d-flex justify-content-center gap-2">
                             </div>
                         </div>
                         
@@ -199,7 +195,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
                 </div>

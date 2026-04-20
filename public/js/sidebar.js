@@ -33,7 +33,7 @@ $(document).ready(function() {
         $('#sidebar').toggleClass('collapsed');
         $('body').toggleClass('sidebar-collapsed');
     });
-    
+
     // Sidebar dropdown
     $('.nav-item > div.d-flex').on('click', function() {
         var submenu = $(this).next('.menu-content');

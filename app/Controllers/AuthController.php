@@ -8,13 +8,16 @@ class AuthController extends BaseController {
         \CodeIgniter\HTTP\ResponseInterface $response,
         \Psr\Log\LoggerInterface $logger
     ){
+        // Gọi initController của BaseController
         parent::initController($request, $response, $logger);
 
-         // Chưa login thì về trang login
+        // Kiểm tra đã login chưa
         if (!$this->session->get('logged_in')) {
          header('Location: ' . base_url('login'));
          exit;
         }
+        
+        // Cập nhật lại dữ liệu user
         $this->data['user'] = $this->session->get('user');
     }   
 }

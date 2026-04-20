@@ -31,14 +31,14 @@
                     <a class="d-block py-3 px-4  bg-transparent text-white text-decoration-none" href="<?= base_url('dashboard') ?>"
                        data-title="Dashboard">
                         <i class="bi bi-house-door"></i>
-                        <span class="menu-title ml-2" data-i18n="Dashboard">Dashboard</span>
+                        <span class="menu-title ml-2" data-i18n="Dashboard"><?= lang('app.dashboard') ?></span>
                     </a>
                 </li>
           
                 <li class="d-block position-relative nav-item <?= ($page === 'users/index') ? 'sidebar-group-active' : '' ?>">
                     <a class="d-block py-3 px-4 bg-transparent text-white text-decoration-none" href="<?= base_url('users') ?>">
                         <i class="bi bi-person"></i>
-                        <span class="menu-title ml-2" data-i18n="Users">Users</span>
+                        <span class="menu-title ml-2" data-i18n="Users"><?= lang('app.users') ?></span>
                     </a>
                 </li>
           
@@ -46,21 +46,21 @@
                     <div class="d-flex justify-content-between align-items-center py-3 px-4 bg-transparent text-white text-decoration-none">
                         <div>
                             <i class="bi bi-box"></i>
-                            <span class="menu-title ml-2" data-i18n="Products">Products</span>
+                            <span class="menu-title ml-2" data-i18n="Products"><?= lang('app.products') ?></span>
                         </div>
                         <i class="bi bi-chevron-right menu-arrow float-right mt-1" style="transition: transform 0.2s;"></i>
                     </div>
                     <ul class="menu-content pl-5 d-none">
-                        <li class="d-block position-relative nav-item <?= ($page === 'products/index') ? 'sidebar-group-active' : '' ?>">
-                            <a class="d-block py-3 px-4 bg-transparent text-white text-decoration-none" href="<?= base_url('products') ?>">
+                <li class="d-block position-relative nav-item <?= ($page === 'products/index') ? 'sidebar-group-active' : '' ?>">
+                    <a class="d-block py-3 px-4 bg-transparent text-white text-decoration-none" href="<?= base_url('products') ?>">
                                 <i class="bi bi-table"></i>
-                                <span class="menu-title ml-2" data-i18n="Products">Table Products</span>
-                            </a>
-                        </li>
+                                <span class="menu-title ml-2" data-i18n="Products"><?= lang('app.table_product') ?></span>
+                    </a>
+                </li>
                         <li class="d-block position-relative nav-item <?= ($page === 'products_info/index') ? 'sidebar-group-active' : '' ?>">
                             <a class="d-block py-3 px-4 bg-transparent text-white text-decoration-none" href="<?= base_url('products-info') ?>">
                                 <i class="bi bi-info-circle"></i>
-                                <span class="menu-title ml-2" data-i18n="ProductsInfo">Products Info</span>
+                                <span class="menu-title ml-2" data-i18n="ProductsInfo"><?= lang('app.product_info') ?></span>
                             </a>
                         </li>
                     </ul>
@@ -69,60 +69,27 @@
                 <li class="d-block position-relative nav-item <?= ($page === 'presentations/index') ? 'sidebar-group-active' : '' ?>">
                     <a class="d-block py-3 px-4 bg-transparent text-white text-decoration-none" href="<?= base_url('presentations') ?>">
                         <i class="bi bi-graph-up-arrow"></i>
-                        <span class="menu-title ml-2" data-i18n="Presentations">Presentations</span>
+                        <span class="menu-title ml-2" data-i18n="Presentations"><?= lang('app.presentations') ?></span>
                     </a>
                 </li>
                 <li class="d-block position-relative nav-item <?= ($page === 'materials/index') ? 'sidebar-group-active' : '' ?>">
                     <a class="d-block py-3 px-4 bg-transparent text-white text-decoration-none" href="<?= base_url('materials') ?>">
                         <i class="bi bi-boxes"></i>
-                        <span class="menu-title ml-2" data-i18n="Materials">Materials</span>
+                        <span class="menu-title ml-2" data-i18n="Materials"><?= lang('app.materials') ?></span>
                     </a>
                 </li>
                 <li class="d-block position-relative nav-item <?= ($page === 'process/index') ? 'sidebar-group-active' : '' ?>">
                     <a class="d-block py-3 px-4 bg-transparent text-white text-decoration-none" href="<?= base_url('process') ?>">
                         <i class="bi bi-diagram-3"></i>
-                        <span class="menu-title ml-2" data-i18n="Process">Process</span>
+                        <span class="menu-title ml-2" data-i18n="Process"><?= lang('app.process') ?></span>
                     </a>
                 </li>
-          
-                <li class="has-sub nav-item d-none">
-                    <a class="d-block py-3 px-4 bg-transparent text-white text-decoration-none" href="javascript:;">
-                        <i class="ft-aperture"></i>
-                        <span class="menu-title ml-2" data-i18n="UI Kit">UI Kit</span>
-                        <span class="tag badge badge-pill badge-success float-right mr-1 mt-1">6</span>
-                    </a>
-            
-                    <ul class="menu-content">
-              
-                        <li>
-                            <a class="d-block p-3 bg-transparent text-white text-decoration-none" href="grids.html">
-                                <i class="ft-arrow-right submenu-icon"></i>
-                                <span class="menu-item" data-i18n="Grid">Grid</span>
-                            </a>
-                        </li>
-              
-                        <li class="has-sub">
-                            <a class="d-block p-3 bg-transparent text-white text-decoration-none">
-                                <i class="ft-arrow-right submenu-icon"></i>
-                                <span class="menu-item" data-i18n="Icons">Icons</span>
-                            </a>
-                            <ul class="menu-content ">
-                                <li>
-                                    <a class="d-block p-3 bg-transparent text-white text-decoration-none" href="icons-feather.html">
-                                        <i class="ft-arrow-right submenu-icon"></i>
-                                        <span class="menu-item" data-i18n="Feather Icon">Feather Icon</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-        </ul>
-    </div>
-    <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;">
+            </ul>
         </div>
-    </div>
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;">
+            </div>
+        </div>
         <div class="ps__rail-y" style="top: 0px; height: 418px; right: 0px;">
             <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 176px;">
             </div>

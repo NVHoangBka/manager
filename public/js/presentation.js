@@ -1,92 +1,21 @@
-/* global echarts, chartQuality, chartRevenue, chartCategory, chartOutput */
+/* global echarts, baseUrl */
+let charts = {};
 
 $(document).ready(function() {
-
-    var charts = {};
-
-    function initChart(tabId) {
-        if (charts[tabId]) {
-            charts[tabId].resize();
-            return;
-        }
-
-        if (tabId === 'tab-quality' && document.getElementById('chart-quality')) {
-            charts[tabId] = echarts.init(document.getElementById('chart-quality'));
-            charts[tabId].setOption({
-                tooltip: { trigger: 'axis' },
-                legend: { data: ['Passed', 'Failed'] },
-                color: ['#28a745', '#dc3545'],
-                xAxis: { type: 'category', data: chartQuality.categories },
-                yAxis: { type: 'value' },
-                series: chartQuality.series.map(function(s) {
-                    return { name: s.name, type: 'line', smooth: true,
-                             data: s.data, areaStyle: { opacity: 0.1 } };
-                })
-            });
-        }
-
-        if (tabId === 'tab-revenue' && document.getElementById('chart-revenue')) {
-            charts[tabId] = echarts.init(document.getElementById('chart-revenue'));
-            charts[tabId].setOption({
-                tooltip: {
-                    trigger: 'item',
-                    formatter: function(p) {
-                        return p.name + '<br>' + p.value.toLocaleString() + ' đ (' + p.percent + '%)';
-                    }
-                },
-                legend: { orient: 'vertical', right: '5%', top: 'center' },
-                series: [{
-                    type: 'pie', radius: '65%', center: ['40%', '50%'],
-                    data: chartRevenue,
-                    label: { show: true, formatter: '{b}\n{d}%' }
-                }]
-            });
-        }
-
-        if (tabId === 'tab-category' && document.getElementById('chart-category')) {
-            charts[tabId] = echarts.init(document.getElementById('chart-category'));
-            charts[tabId].setOption({
-                tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
-                legend: { orient: 'vertical', right: '5%', top: 'center' },
-                series: [{
-                    type: 'pie', radius: ['40%', '65%'], center: ['40%', '50%'],
-                    data: chartCategory, label: { show: false }
-                }]
-            });
-        }
-
-        if (tabId === 'tab-output' && document.getElementById('chart-output')) {
-            charts[tabId] = echarts.init(document.getElementById('chart-output'));
-            charts[tabId].setOption({
-                tooltip: { trigger: 'axis' },
-                legend: { data: ['Good', 'Defect'] },
-                color: ['#28a745', '#dc3545'],
-                xAxis: { type: 'category', data: chartOutput.categories },
-                yAxis: { type: 'value' },
-                series: chartOutput.series.map(function(s) {
-                    return { name: s.name, type: 'bar', data: s.data };
-                })
-            });
-        }
-    }
-
-    // Init tab đầu tiên
-    initChart('tab-quality');
-
-    // Chuyển tab
-    $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function(e) {
-        var href = $(e.target).attr('href');
-        if (href) {
-            var tabId = href.replace('#', '');
-            initChart(tabId);
-        }
-    });
-
-    // Resize
-    window.addEventListener('resize', function() {
-        Object.keys(charts).forEach(function(key) {
-            charts[key].resize();
+    loadAllData();
+    
+    $('#btn-refresh').on('click', function() {
+        const btn = $(this);
+        btn.html('<i class="fas fa-spinner fa-spin"></i> Refreshing...').prop('disabled', true);
+        loadAllData().always(() => {
+            btn.html('<i class="fas fa-sync"></i> Refresh All Charts').prop('disabled', false);
         });
+    });
+    
+    // Tab change
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        const target = $(e.target).attr('href').replace('#', '');
+        if (charts[target]) charts[target].resize();
     });
 
     $('#btn-print').on('click', function() {
@@ -159,4 +88,174 @@ $(document).ready(function() {
                 }
         });
     });
+});
+
+function loadAllData() {
+    return $.ajax({
+        url: baseUrl + 'api/presentations/data',
+        method: 'GET',
+        success: function(res) {
+            if (res.status === 'success') {
+                //CHART
+                renderQualityChart(res.chart_quality);
+                renderRevenueChart(res.chart_revenue);
+                renderCategoryChart(res.chart_category);
+                renderOutputChart(res.chart_output);
+                
+                //TABLE
+                renderQualityTable(res.quality_trend);
+                renderRevenueTable(res.revenue_data);
+                renderCategoryTable(res.category_data);
+                renderOutputTable(res.monthly_output);
+            }
+        },
+        error: function() {
+            $('#alert-container').html('<div class="alert alert-danger">Không thể tải dữ liệu biểu đồ</div>');
+        }
+    });
+}
+
+function renderQualityChart(data) {
+    const chart = echarts.init(document.getElementById('chart-quality'));
+    chart.setOption({ 
+        tooltip: { trigger: 'axis' }, 
+        legend: { data: ['Passed', 'Failed'] },
+        color: ['#28a745', '#dc3545'],
+        xAxis: { type: 'category', data: data.categories },
+        yAxis: { type: 'value' },
+        series: data.series.map(function(s) {
+            return { name: s.name, type: 'line', smooth: true,
+                data: s.data, areaStyle: { opacity: 0.1 } };
+        })
+    });
+    charts['tab-quality'] = chart;
+}
+
+function renderRevenueChart(data) {
+    const chart = echarts.init(document.getElementById('chart-revenue'));
+    chart.setOption({ 
+        tooltip: {
+            trigger: 'item',
+            formatter: function(p) {
+                return p.name + '<br>' + p.value.toLocaleString() + ' đ (' + p.percent + '%)';
+            }
+        },
+        legend: { orient: 'vertical', right: '5%', top: 'center' },
+        series: [{
+            type: 'pie', radius: '65%', center: ['40%', '50%'],
+            data: data,
+            label: { show: true, formatter: '{b}\n{d}%' }
+        }]
+    });
+    charts['tab-revenue'] = chart;
+}
+
+function renderCategoryChart(data) {
+    const chart = echarts.init(document.getElementById('chart-category'));
+    chart.setOption({ 
+        tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+        legend: { orient: 'vertical', right: '5%', top: 'center' },
+        series: [{
+            type: 'pie', radius: ['40%', '65%'], center: ['40%', '50%'],
+            data: data, label: { show: false }
+        }]
+    });
+    charts['tab-category'] = chart;
+}
+
+function renderOutputChart(data) {
+    const chart = echarts.init(document.getElementById('chart-output'));
+    chart.setOption({ 
+        tooltip: { trigger: 'axis' },
+        legend: { data: ['Good', 'Defect'] },
+        color: ['#28a745', '#dc3545'],
+        xAxis: { type: 'category', data: data.categories },
+        yAxis: { type: 'value' },
+        series: data.series.map(function(s) {
+            return { name: s.name, type: 'bar', data: s.data };
+        })
+    });
+    charts['tab-output'] = chart;
+}
+
+// ==================== RENDER TABLES ====================
+function renderQualityTable(data) {
+    let html = '';
+    data.forEach(q => {
+        const total = q.passed + q.failed;
+        const rate = total > 0 ? (q.failed / total * 100).toFixed(1) : 0;
+        html += `
+            <tr>
+                <td>${q.month}</td>
+                <td class="text-success font-weight-bold">${Number(q.passed).toLocaleString()}</td>
+                <td class="text-danger font-weight-bold">${Number(q.failed).toLocaleString()}</td>
+                <td><span class="badge badge-${rate > 10 ? 'danger' : (rate > 5 ? 'warning' : 'success')}">${rate}%</span></td>
+            </tr>`;
+    });
+    $('#table-quality tbody').html(html);
+}
+
+function renderRevenueTable(data) {
+    let total = data.reduce((sum, item) => sum + parseInt(item.value), 0);
+    let html = '';
+    data.forEach(r => {
+        const pct = total > 0 ? (r.value / total * 100).toFixed(1) : 0;
+        console.log(total);
+        html += `
+            <tr>
+                <td>${r.name}</td>
+                <td class="text-success font-weight-bold">${Number(r.value).toLocaleString()}</td>
+                <td>
+                    <div class="progress font-weight-bold" style="height:16px;">
+                        <div class="progress-bar bg-success" style="width:${pct}%">${pct}%</div>
+                    </div>
+                </td>
+            </tr>`;
+    });
+    $('#table-revenue tbody').html(html);
+}
+
+function renderCategoryTable(data) {
+    let total = data.reduce((sum, item) => sum + parseInt(item.value), 0);
+   
+    let html = '';
+    data.forEach(r => {
+        const pct = total > 0 ? (r.value / total * 100).toFixed(1) : 0;
+        html += `
+            <tr>
+                <td>${r.name}</td>
+                <td class="text-success font-weight-bold">${Number(r.value).toLocaleString()} đ</td>
+                <td>
+                    <div class="progress font-weight-bold" style="height:16px;">
+                        <div class="progress-bar bg-success" style="width:${pct}%">${pct}%</div>
+                    </div>
+                </td>
+            </tr>`;
+    });
+    $('#table-category tbody').html(html);
+}
+
+function renderOutputTable(data) {
+    let total = data.reduce((sum, item) => sum + item.value, 0);
+    let html = '';
+    let html_footer = '';
+    let totalGood = 0, totalDefect = 0;
+    data.forEach(m => {
+        const good = parseInt(m.good_qty);
+        const defect = parseInt(m.defect_qty);
+        totalGood += good;
+        totalDefect += defect;
+        html += `<tr>
+            <td>${m.month}</td>
+            <td class="text-success font-weight-bold">${good.toLocaleString()}</td>
+            <td class="text-danger font-weight-bold">${defect.toLocaleString()}</td>
+            <td class="font-weight-bold">${(good + defect).toLocaleString()}</td>
+        </tr>`;
+    });
+    $('#table-output tbody').html(html);
+    $('#table-output tfoot').html(html_footer);
+}
+
+$(window).resize(() => {
+    Object.values(charts).forEach(chart => chart && chart.resize());
 });

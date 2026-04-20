@@ -2,22 +2,8 @@
     <h4><i class="fas fa-box"></i> Products</h4>
 </div>
 
-<?php if (session()->getFlashdata('success')): ?>
-    <div class="alert alert-success alert-dismissible fade show">
-        <i class="fas fa-check-circle"></i> <?= session()->getFlashdata('success') ?>
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-    </div>
-<?php endif; ?>
-
-<?php if (isset($errors)): ?>
-    <div class="alert alert-danger">
-        <ul class="mb-0">
-            <?php foreach ($errors as $error): ?>
-                <li><?= $error ?></li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
-<?php endif; ?>
+<!-- Alert -->
+<div id="alert-container"></div>
 
 <div class="row">
                 
@@ -34,6 +20,9 @@
             </div>
 
             <div class="card-body">
+                <a href="<?= base_url('products/create') ?>" class="btn btn-sm btn-success float-right mb-3" id="btn-add-new">
+                    <i class="bi bi-plus-square"></i> Add Product
+                </a>
                 <div class="table-responsive">
                     <table id="products-table" class="table table-bordered table-hover" style="width:100%">
                         <thead class="thead-dark">
@@ -194,7 +183,7 @@
                                         data-product-id="<?= $product_edit['id'] ?>">
                                     ★
                                 </button>
-                                <?php else: ?>
+                        <?php else: ?>
                                 <span class="position-absolute badge badge-primary"
                                       style="top:2px;left:2px;font-size:9px;">Main</span>
                                 <?php endif; ?>
@@ -215,7 +204,7 @@
                         <input type="file" 
                                name="images[]" 
                                multiple
-                               class="form-control-file" 
+                               class="form-control-file"
                                id="input-images"
                                accept="image/jpg,image/jpeg,image/png">
                         

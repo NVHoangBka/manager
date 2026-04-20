@@ -15,6 +15,7 @@ class ProductModel extends Model
     protected $createdField = 'created_at';
     protected $updatedField  = 'updated_at';
     
+    // ====================== BASIC QUERIES ======================
     public function getAll() {
         return $this ->findAll();
     }
@@ -24,15 +25,16 @@ class ProductModel extends Model
     }
     
     public function getActive() {
-        return $this -> wwhere('status', 1) -> findAll();
+        return $this -> where('status', 1) -> findAll();
     }
     
+    // ====================== STATISTICS ======================
     public function getTotalOders($id)
     {
         return $this->db->table('sales_orders')
             ->where('product_id', $id)
             ->countAllResults();
-    }
+}
     
     public function getRevenues($id)
     {
