@@ -43,9 +43,11 @@
                                     <small class="text-muted"><?= esc($u['email']) ?></small>
                                 </td>
                                 <td>
+                                    <?php /*
                                     <span class="badge badge-<?= $u['role'] === 'admin' ? 'danger' : 'info' ?>">
                                         <?= $u['role'] ?>
                                     </span>
+                                    */ ?>
                                 </td>
                                 <td>
                                     <span class="badge badge-<?= $u['status'] ? 'success' : 'secondary' ?>">
@@ -110,8 +112,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label><?= lang('app.role') ?>  <span class="text-danger">*</span></label>
-                        <select name="role" id="f-role" class="form-control" required>
+                        <label><?= lang('app.department') ?>  <span class="text-danger">*</span></label>
+                        <select name="department" id="f-role" class="form-control" required>
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
                         </select>

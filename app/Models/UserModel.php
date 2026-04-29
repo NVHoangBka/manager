@@ -42,4 +42,61 @@ class UserModel extends Model
     {
         return $this->findAll();
     }
+    
+    // --- Permissions ---
+
+    /**
+     * get UserPermissionIDs
+     */
+    public function getUserPermissionIds($userId)
+    {
+        $res = $this->db->table('user_permissions')
+                        ->where('user_id', $userId)
+                        ->get()
+                        ->getResultArray();
+        
+        // Trả về mảng chỉ chứa ID: [1, 5, 10]
+        return array_column($res, 'permission_id');
+    }
+
+    /**
+     * get UserPermissionKeys
+     */
+    public function getUserPermissionKeys($userId)
+    {
+        return $this->db->table('user_permissions')
+                        ->select('permissions.perm_key')
+                        ->join('permissions', 'permissions.id = user_permissions.permission_id')
+                        ->where('user_id', $userId)
+                        ->get()
+                        ->getResultArray();
+    }
+
+    /**
+     * updatePermissions
+     */
+    public function syncPermissions($userId, $permissionIds)
+    {
+        // Sử dụng Transaction để đảm bảo nếu lỗi thì không mất dữ liệu cũ
+        $this->db->transStart();
+
+        // 1. Xóa toàn bộ quyền hiện tại của user này
+        $this->db->table('user_permissions')->where('user_id', $userId)->delete();
+
+        // 2. Nếu có chọn quyền mới thì mới chèn vào
+        if (!empty($permissionIds) && is_array($permissionIds)) {
+            $insertData = [];
+            foreach ($permissionIds as $pId) {
+                $insertData[] = [
+                    'user_id'       => $userId,
+                    'permission_id' => $pId
+                ];
+            }
+            $this->db->table('user_permissions')->insertBatch($insertData);
+        }
+
+        $this->db->transComplete();
+        return $this->db->transStatus();
+    }
+    
 }

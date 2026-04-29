@@ -85,6 +85,55 @@ $(document).ready(function() {
         });
     });
     
+    
+    // ====================== SUBMIT FORM (AJAX) ======================
+    $('#product-form').on('submit', function(e) {
+        e.preventDefault();
+
+        var productId = $('#product-id').val();
+        var url       = productId
+            ? baseUrl + 'api/products/update/' + productId
+            : baseUrl + 'api/products/store';
+
+        var formData = new FormData(this);
+        var btnSave  = $(this).find('[type=submit]');
+
+        btnSave.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Saving...');
+
+        $.ajax({
+            url:         url,
+            method:      'POST',
+            data:        formData,
+            contentType: false,
+            processData: false,
+            headers:     { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            success: function(res) {
+                if (res.status === 'success') {
+                    showAlert('success', '<i class="fas fa-check-circle"></i> ' + res.message);
+
+                    if (!productId) {
+                        // Reset form sau khi thêm mới
+                        $('#product-form')[0].reset();
+                        $('#new-images-preview').empty();
+                    }
+
+                    // Reload trang sau 1s để cập nhật bảng
+                    setTimeout(function() { location.reload(); }, 1000);
+                } else {
+                    showErrors(res.errors || { error: res.message });
+                }
+            },
+            error: function(xhr) {
+                showAlert('danger', 'Có lỗi xảy ra: ' + xhr.statusText);
+            },
+            complete: function() {
+                btnSave.prop('disabled', false).html(
+                    '<i class="fas fa-save"></i> ' + (productId ? 'Update' : 'Save')
+                );
+            }
+        });
+    });
+    
     // ====================== TAB SYSTEM ======================
     $('#productTabs .product-item').on('click', function() {
         $('#productTabs .product-item').removeClass('product-item-active');

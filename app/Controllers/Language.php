@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 class Language extends BaseController {
     public function switch($lang) {
-        if(in_array($lang, ['vi','en','ko'])) {
+        if(in_array($lang, ['en','vi','ko'])) {
             // Lưu vào session
             session()->set('lang', $lang);
             

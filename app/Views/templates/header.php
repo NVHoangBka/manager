@@ -12,7 +12,7 @@
                     <li class="i18n-dropdown dropdown mr-2">
                         <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">
                             <?php
-                                $currentLang = session('lang') ?? 'en';
+                                $currentLang = session('lang') ?? 'vi';
                                 $flags = [
                                     'vi' => base_url('uploads/flag/vi.png'),
                                     'en' => base_url('uploads/flag/us.png'),

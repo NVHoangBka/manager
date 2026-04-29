@@ -72,6 +72,9 @@
     <script src="<?= base_url('js/app.js') ?>"></script>
     
     <script src="<?= base_url('js/sidebar.js') ?>"></script>
+    
+    <script src="<?= base_url('js/permissions.js') ?>"></script>
+
 
     <script>
         var baseUrl = '<?= base_url() ?>';

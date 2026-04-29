@@ -6,10 +6,11 @@ use CodeIgniter\Config\BaseConfig;
 
 class App extends BaseConfig
 {
-    public string $baseURL = 'http://192.168.1.198/';
+    public string $baseURL = 'http://192.168.3.198/';
     
     public $defaultLocale = 'en';  
-    public $supportedLocales = ['vi', 'en', 'ko'];
+    public $supportedLocales = [ 'en','vi', 'ko'];
+    public $negotiateLocale = false;
 
     public array $allowedHostnames = [];
 
@@ -18,8 +19,6 @@ class App extends BaseConfig
     public string $uriProtocol = 'REQUEST_URI';
 
     public string $permittedURIChars = 'a-z 0-9~%.:_\-';
-
-    public bool $negotiateLocale = false;
 
     public string $appTimezone = 'UTC';
     

@@ -106,12 +106,9 @@
             </div>
 
             <div class="card-body">
-                <form method="POST" enctype="multipart/form-data"
-                        action="<?= isset($product_edit) && $product_edit
-                            ? base_url('products/update/' . $product_edit['id'])
-                            : base_url('products/store') ?>">
+                <form method="POST" enctype="multipart/form-data">
                     <?= csrf_field() ?>
-
+                    <input type="hidden" id="product-id" value="<?= $product_edit['id'] ?? '' ?>">
                     <div class="form-group">
                         <label>Code <span class="text-danger">*</span></label>
                         <input type="text" name="code" class="form-control"

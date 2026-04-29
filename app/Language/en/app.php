@@ -17,6 +17,7 @@ return [
     'process'           => 'Process Flow',
     'logout'            => 'Logout',
     'login'             => 'Login',
+    'department-permissions' => 'Department Permissions',
     
     // Buttons
     'add'               => 'Add New',
@@ -59,7 +60,7 @@ return [
     'username'          => 'Username',
     'full_name'         => 'Full Name',
     'email'             => 'Email',
-    'role'              => 'Role',
+    'department'        => 'Department',
     'status'            => 'Status',
     'password'          => 'Password',
     
@@ -89,6 +90,10 @@ return [
     'quality_process'    => 'Quality Inspection',
     'order_process'      => 'Order Processing',
     'note_process'       => 'Double click = Edit node | Right click = Delete | Drag and drop = Move',
+    
+    //Department Permissions
+    'department-list' => 'Department List',
+
     
     // Common
     'total'             => 'Total',

@@ -84,6 +84,12 @@
                         <span class="menu-title ml-2" data-i18n="Process"><?= lang('app.process') ?></span>
                     </a>
                 </li>
+                <li class="d-block position-relative nav-item <?= ($page === 'permissions') ? 'sidebar-group-active' : '' ?>">
+                    <a class="d-block py-3 px-4 bg-transparent text-white text-decoration-none" href="<?= base_url('permissions') ?>">
+                        <i class="bi bi-key-fill"></i>
+                        <span class="menu-title ml-2" data-i18n="permissions"><?= lang('app.department-permissions') ?></span>
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="ps__rail-x" style="left: 0px; bottom: 0px;">

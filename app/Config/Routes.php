@@ -8,6 +8,7 @@ use CodeIgniter\Router\RouteCollection;
 //========================== LANGUAGE ========================
 $routes->get('switch-lang/(:any)', 'Language::switch/$1');
 
+//========================== LOGIN ========================
 $routes->get('/', 'Auth::index');
 $routes->get('login', 'Auth::login');
 $routes->post('login', 'Auth::login');
@@ -44,6 +45,7 @@ $routes->group('products', function($routes) {
     $routes->get('create', 'Products::create');
     $routes->get('edit/(:num)', 'Products::edit/$1');
 });
+
 // API Routes
 $routes->group('api/products',['namespace' => 'App\Controllers\Api'], function($routes) {
     $routes->post('store', 'ProductsApi::store');
@@ -83,3 +85,9 @@ $routes->post('process/add-edge',          'Process::addEdge');
 $routes->post('process/delete-edge/(:num)','Process::deleteEdge/$1');
 $routes->post('process/save-position/(:num)', 'Process::savePosition/$1');
 
+//Permissions
+$routes->group('permissions', function($routes) {
+    $routes->get('/', 'Permissions::index');
+    $routes->get('get/(:num)', 'Permissions::get/$1');
+    $routes->post('save', 'Permissions::save');
+});
